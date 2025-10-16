@@ -89,7 +89,7 @@ const SignUp = () => {
   };
   return (
     <>
-      <div className="flex items-center">
+      <div className="flex items-center h-screen">
         <ToastContainer
           position="top-center"
           autoClose={5000}
