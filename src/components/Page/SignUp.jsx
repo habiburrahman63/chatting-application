@@ -6,8 +6,10 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import { RotatingLines } from "react-loader-spinner";
 
 const SignUp = () => {
+  const [loading, setLoading] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
@@ -66,18 +68,21 @@ const SignUp = () => {
       password &&
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
     ) {
+      setLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((user) => {
           toast.success("Registration successfully done");
           setTimeout(() => {
             navigate("/login");
-          }, 3000);
+          }, 2000);
+          // setLoading(false);
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           toast.error(errorCode);
           setemailErr("This email is already in use.");
+          setLoading(false);
           // ..
         });
     }
@@ -98,7 +103,7 @@ const SignUp = () => {
           theme="dark"
           transition={Bounce}
         />
-        <div className="flex justify-end w-[50%] mr-[70px]">
+        <div className="flex justify-end w-[50%] mr-[70px] ">
           <div>
             <div>
               <h1 className="text-[34px] font-bold font-secendry text-primary">
@@ -169,13 +174,30 @@ const SignUp = () => {
                 </div>
               </div>
               <div>
-                <button
-                  onClick={handleSignUp}
-                  className="z-[111] relative bg-primary py-[20px] cursor-pointer px-[150px] text-white rounded-[88px] text-[20px] font-semibold font-secendry mt-[51px] mb-[35px]"
-                >
-                  <span> Sign up</span>
-                  <span className="absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 h-[28px] w-[71px] blur-[10px] z-[-1]"></span>
-                </button>
+                {loading ? (
+                  <div className="flex justify-center w-[368px] py-[20px]">
+                    <RotatingLines
+                      visible={true}
+                      height="96"
+                      width="96"
+                      color="green"
+                      strokeWidth="5"
+                      animationDuration="0.75"
+                      ariaLabel="rotating-lines-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                    />
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleSignUp}
+                    className="z-[111] relative bg-primary py-[20px] cursor-pointer px-[150px] text-white rounded-[88px] text-[20px] font-semibold font-secendry mt-[51px] mb-[35px]"
+                  >
+                    <span> Sign up</span>
+                    <span className="absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 h-[28px] w-[71px] blur-[10px] z-[-1]"></span>
+                  </button>
+                )}
+
                 <p className="text-[14px] font-primary text-[#03014C] font-semibold w-[368px] text-center">
                   Already have an account ?{" "}
                   <Link to="/login">
