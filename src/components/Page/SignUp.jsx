@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import sign from "../../assets/sign.png";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import { Bounce, ToastContainer, toast } from "react-toastify";
@@ -69,20 +73,31 @@ const SignUp = () => {
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
     ) {
       setLoading(true);
+
       createUserWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          toast.success("Registration successfully done");
+          sendEmailVerification(auth.currentUser);
+          toast.success(
+            "Registration successfully done. Please verify your email"
+          );
+
           setTimeout(() => {
             navigate("/login");
           }, 2000);
+          setEmail("");
+          setFullName("");
+          setPassword("");
           // setLoading(false);
         })
         .catch((error) => {
           const errorCode = error.code;
-          const errorMessage = error.message;
-          toast.error(errorCode);
           setemailErr("This email is already in use.");
           setLoading(false);
+          console.log(errorCode);
+          if (errorCode.includes("auth/email-already-in-use")) {
+            toast.error("This email is already used");
+          }
+
           // ..
         });
     }
@@ -115,6 +130,7 @@ const SignUp = () => {
               <div>
                 <div className="w-[366px] mt-[40px] relative">
                   <input
+                    value={email}
                     onChange={handleEmail}
                     type="email"
                     placeholder="Email Addres"
@@ -129,6 +145,7 @@ const SignUp = () => {
                 </div>
                 <div className="w-[366px] mt-[40px] relative">
                   <input
+                    value={fullName}
                     onChange={handleFullName}
                     type="text"
                     placeholder="Full Name"
@@ -144,6 +161,7 @@ const SignUp = () => {
                 <div className="w-[366px] mt-[40px] relative">
                   <div className="relative">
                     <input
+                      value={password}
                       onChange={handlePassword}
                       type={show ? "text" : "password"}
                       placeholder="Password"
@@ -197,7 +215,6 @@ const SignUp = () => {
                     <span className="absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 h-[28px] w-[71px] blur-[10px] z-[-1]"></span>
                   </button>
                 )}
-
                 <p className="text-[14px] font-primary text-[#03014C] font-semibold w-[368px] text-center">
                   Already have an account ?{" "}
                   <Link to="/login">

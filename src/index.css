@@ -8,3 +8,7 @@
 
   --color-primary: #1e1e1e;
 }
+
+body {
+  overflow: hidden;
+}

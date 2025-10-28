@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 import login from "../../assets/login.jpg";
 import google from "../../assets/google.png";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import { GoogleAuthProvider } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { userInfo } from "../../Slices/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigat = useNavigate();
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [emailErr, setEmailErr] = useState("");
@@ -43,16 +56,62 @@ const Login = () => {
         setPasswordErr("The string must be eight characters or longer!");
       }
     }
+    if (email && password) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          dispatch(userInfo(user.user));
+          localStorage.setItem("userInfo", JSON.stringify(user));
+          toast.success("Login successfully done");
+          setTimeout(() => {
+            navigat("/home");
+          });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+
+          if (errorCode.includes("auth/invalid-credential")) {
+            toast.error("This email and password incarete");
+          }
+        });
+    }
+  };
+
+  const googleSignIn = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+      });
   };
   return (
     <div className="flex items-center h-screen">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
       <div className="flex justify-end w-[50%] mr-[142px]">
         <div>
           <div>
             <h1 className="text-[34px] font-bold font-primary text-primary">
               Login to your account!
             </h1>
-            <div className="w-[220px] flex items-center gap-[9px] py-[21px] px-[29px] rounded-[8px] inset-shadow-2xs border-[1px] border-[#03014C]/50 mt-[30px]">
+            <div
+              onClick={googleSignIn}
+              className="cursor-pointer w-[220px] flex items-center gap-[9px] py-[21px] px-[29px] rounded-[8px] inset-shadow-2xs border-[1px] border-[#03014C]/50 mt-[30px]"
+            >
               <img src={google} alt="google" className="w-[19px]" />
               <p className="text-[14px] font-semibold text-[#03014C] font-primary">
                 Login with Google
@@ -104,11 +163,14 @@ const Login = () => {
             <div>
               <button
                 onClick={handleLogin}
-                className="z-[111] relative bg-primary py-[20px]  px-[123px] text-white rounded-[8px] text-[20px] font-semibold font-secendry mt-[51px] mb-[35px]"
+                className="z-[111] relative bg-primary py-[20px]  px-[123px] text-white rounded-[8px] text-[20px] font-semibold font-secendry mt-[51px] "
               >
                 <span>Login to Continue</span>
                 <span className="absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 h-[28px] w-[71px] blur-[10px] z-[-1]"></span>
               </button>
+              <p className="text-[16px] font-primary text-[#03014C] font-semibold w-[368px] text-center my-[20px] cursor-pointer">
+                <Link to="/forgot">Forgot Password</Link>
+              </p>
               <p className="text-[14px] font-primary text-[#03014C] font-semibold w-[368px] text-center">
                 Don’t have an account ?{" "}
                 <Link to="/">
