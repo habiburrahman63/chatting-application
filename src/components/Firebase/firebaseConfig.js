@@ -7,6 +7,7 @@ import { initializeApp } from "firebase/app";
 const firebaseConfig = {
   apiKey: "AIzaSyB5wU1gANqDbyx5yeWTwFMWes-RwgRG8OM",
   authDomain: "better-chat-30e8d.firebaseapp.com",
+  databaseURL: "https://better-chat-30e8d-default-rtdb.firebaseio.com",
   projectId: "better-chat-30e8d",
   storageBucket: "better-chat-30e8d.firebasestorage.app",
   messagingSenderId: "648250530745",
