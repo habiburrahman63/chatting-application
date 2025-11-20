@@ -13,6 +13,7 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 import { GoogleAuthProvider } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { userInfo } from "../../Slices/userSlice";
+import "react-toastify/dist/ReactToastify.css";
 const Login = () => {
   const dispatch = useDispatch();
   const navigat = useNavigate();
@@ -64,7 +65,7 @@ const Login = () => {
           toast.success("Login successfully done");
           setTimeout(() => {
             navigat("/home");
-          });
+          }, 2000);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -166,7 +167,7 @@ const Login = () => {
             <div>
               <button
                 onClick={handleLogin}
-                className="z-[111] relative bg-primary py-[20px]  px-[123px] text-white rounded-[8px] text-[20px] font-semibold font-secendry mt-[51px] "
+                className="z-[111] cursor-pointer relative bg-primary py-[20px]  px-[123px] text-white rounded-[8px] text-[20px] font-semibold font-secendry mt-[51px] "
               >
                 <span>Login to Continue</span>
                 <span className="absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 h-[28px] w-[71px] blur-[10px] z-[-1]"></span>
