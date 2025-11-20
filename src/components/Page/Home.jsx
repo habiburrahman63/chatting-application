@@ -21,7 +21,7 @@ const Home = () => {
     if (!data) {
       navigate("/login");
     }
-  });
+  }, []);
 
   onAuthStateChanged(auth, (user) => {
     if (user.emailVerified) {

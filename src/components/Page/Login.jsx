@@ -13,7 +13,6 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 import { GoogleAuthProvider } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { userInfo } from "../../Slices/userSlice";
-
 const Login = () => {
   const dispatch = useDispatch();
   const navigat = useNavigate();
@@ -59,8 +58,9 @@ const Login = () => {
     if (email && password) {
       signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          dispatch(userInfo(user.user));
+          dispatch(userInfo(user));
           localStorage.setItem("userInfo", JSON.stringify(user));
+
           toast.success("Login successfully done");
           setTimeout(() => {
             navigat("/home");
@@ -82,6 +82,9 @@ const Login = () => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const user = result.user;
+        toast.success(
+          "Registration successfully done. Please verify your email"
+        );
       })
       .catch((error) => {
         const errorCode = error.code;

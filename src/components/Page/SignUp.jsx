@@ -6,13 +6,17 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
+import { getDatabase, ref, set } from "firebase/database";
+import { useSelector } from "react-redux";
 
 const SignUp = () => {
+  const db = getDatabase();
   const [loading, setLoading] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
@@ -80,7 +84,10 @@ const SignUp = () => {
           toast.success(
             "Registration successfully done. Please verify your email"
           );
-
+          updateProfile(auth.currentUser, {
+            displayName: fullName,
+            // photoURL: "https://example.com/jane-q-user/profile.jpg",
+          });
           setTimeout(() => {
             navigate("/login");
           }, 2000);
@@ -88,6 +95,11 @@ const SignUp = () => {
           setFullName("");
           setPassword("");
           // setLoading(false);
+
+          set(ref(db, "users/" + user.user.uid), {
+            username: fullName,
+            email: email,
+          });
         })
         .catch((error) => {
           const errorCode = error.code;
