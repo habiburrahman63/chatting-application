@@ -44,7 +44,7 @@ const Home = () => {
     <div>
       {verify ? (
         <div className="flex mt-[35px]">
-          <Sideber />
+          <Sideber active="home" />
           <div className="flex">
             <div className="flex flex-col gap-[20px]">
               <GroupList />

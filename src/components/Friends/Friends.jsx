@@ -37,6 +37,7 @@ const Friends = () => {
     console.log("ok cool");
     set(push(ref(db, "FriendBlock/")), {
       ...item,
+      // blockedBy: data.uid,
 
       // receiverName: item.receiverName,
       // receiverId: item.receiverId,

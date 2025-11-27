@@ -5,11 +5,13 @@ import { AiFillMessage } from "react-icons/ai";
 import { MdOutlineSettings } from "react-icons/md";
 import { ImExit } from "react-icons/im";
 import { getAuth, signOut } from "firebase/auth";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { userInfo } from "../../Slices/userSlice";
+import Home from "../Page/Home";
 
-const Sideber = () => {
+const Sideber = ({ active }) => {
   const data = useSelector((selector) => selector?.userInfo?.value);
   console.log(data, "sidber");
   const auth = getAuth();
@@ -35,18 +37,33 @@ const Sideber = () => {
         <p>{data?.displayName || data?.user.displayName}</p>
       </div>
       <div
-        className="relative flex justify-center pt-[20px] pb-[25px] text-center text-[47px]  rounded-tl-[20px] rounded-bl-[20px]
-  bg-white mt-[78px] ml-[25px] pr-[69px] pl-[45px] after:absolute after:content-[''] after:top-0 after:right-0 after:w-[8px] after:h-full after:bg-[#1E1E1E] after:shadow-cyan-500/50 after:rounded-tl-[8px] after:rounded-bl-[8px]"
+        className={`relative flex justify-center pt-[20px] pb-[25px] text-center text-[47px]  rounded-tl-[20px] rounded-bl-[20px]
+  ${
+    active == "home" ? "bg-white" : "bg-transparent"
+  } mt-[78px] ml-[25px] pr-[69px] pl-[45px] after:absolute after:content-[''] after:top-0 after:right-0 after:w-[8px] after:h-full after:bg-[#1E1E1E] after:shadow-cyan-500/50 after:rounded-tl-[8px] after:rounded-bl-[8px]`}
       >
-        <IoMdHome className="bg-white text-black " />
+        <Link to="/home">
+          <IoMdHome
+            className={`${active == "home" ? "text-black" : "text-white"}`}
+          />
+        </Link>
       </div>
-      <div className="text-[46px] text-[#C3C3C3] flex justify-center mt-[57px]">
-        <AiFillMessage />
+      <div
+        className={`relative flex justify-center pt-[20px] pb-[25px] text-center text-[47px]  rounded-tl-[20px] rounded-bl-[20px]
+  ${
+    active == "massege" ? "bg-white" : "bg-transparent"
+  } mt-[78px] ml-[25px] pr-[69px] pl-[45px] after:absolute after:content-[''] after:top-0 after:right-0 after:w-[8px] after:h-full after:bg-[#1E1E1E] after:shadow-cyan-500/50 after:rounded-tl-[8px] after:rounded-bl-[8px]`}
+      >
+        <Link to="/msg">
+          <AiFillMessage
+            className={`${active == "home" ? "text-white" : "text-black"}`}
+          />
+        </Link>
       </div>
       <div className="text-[46px] text-[#C3C3C3] flex justify-center mt-[57px]">
         <MdOutlineSettings />
       </div>
-      <div className="text-[46px] text-[#C3C3C3] flex justify-center absolute left-[50%] translate-[-50%] bottom-[100px]">
+      <div className="text-[46px] text-[#C3C3C3] flex justify-center absolute left-[50%] translate-[-50%] bottom-[50px] cursor-pointer">
         <ImExit onClick={handleSginOut} />
       </div>
     </div>

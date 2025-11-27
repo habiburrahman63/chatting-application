@@ -1,10 +1,10 @@
-import { createBrowserRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignUp from "./components/Page/SignUp";
 import Login from "./components/Page/Login";
 import firebaseConfig from "./components/Firebase/firebaseConfig";
 import ForgotPassword from "./components/Page/ForgotPassword";
 import Home from "./components/Page/Home";
+import Massege from "./components/Massege/Massege";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,11 +24,14 @@ function App() {
       path: "/home",
       element: <Home />,
     },
+    {
+      path: "/msg",
+      element: <Massege />,
+    },
   ]);
-
   return (
     <>
-      <RouterProvider router={router} />,
+      <RouterProvider router={router} />
     </>
   );
 }

@@ -80,7 +80,7 @@ const GroupList = () => {
         </div>
         <div className="overflow-y-scroll h-[462px] scrollbar-hide">
           {show ? (
-            <div className="p-[50px] bg-green-500 absolute w-[500px] rounded top-[200px] left-1/2 -translate-x-1/2">
+            <div className="transition duration-300 p-[50px] bg-green-500 absolute w-[500px] rounded top-[200px] left-1/2 -translate-x-1/2">
               <div>
                 <input
                   onChange={(e) => {
