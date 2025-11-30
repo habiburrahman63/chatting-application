@@ -19,7 +19,7 @@ const MyGroups = () => {
       });
       setMygroup(arr);
     });
-  });
+  }, []);
   return (
     <div>
       <div className="w-[427px] mt-[43px]  bg-[#ffffff] pt-[13px] px-[20px] pb-[21px] rounded-[20px] ml-[43px] shadow-lg">

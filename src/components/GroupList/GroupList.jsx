@@ -48,7 +48,7 @@ const GroupList = () => {
       });
       setgroupList(arr);
     });
-  });
+  }, []);
 
   return (
     <div>

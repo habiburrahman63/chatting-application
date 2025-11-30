@@ -33,16 +33,28 @@ const Friends = () => {
     });
   }, []);
 
-  const handleFriend = (item) => {
-    console.log("ok cool");
-    set(push(ref(db, "FriendBlock/")), {
-      ...item,
-      // blockedBy: data.uid,
+  // const handleFriend = (item) => {
+  //   console.log("ok cool");
+  //   set(push(ref(db, "FriendBlock/")), {
+  //     ...item,
+  //     // blockedBy: data.uid,
 
-      // receiverName: item.receiverName,
-      // receiverId: item.receiverId,
-      // senderName: item.senderName,
-      // senderId: item.senderId,
+  //     receiverName: item.receiverName,
+  //     receiverId: item.receiverId,
+  //     senderName: item.senderName,
+  //     senderId: item.senderId,
+  //   }).then(() => {
+  //     remove(ref(db, "friend/" + item.userId));
+  //   });
+  // };
+
+  const handleFriend = (item) => {
+    set(push(ref(db, "FriendBlock/")), {
+      senderId: item.senderId,
+      receiverId: item.receiverId,
+      senderName: item.senderName,
+      receiverName: item.receiverName,
+      blockedBy: data.uid,
     }).then(() => {
       remove(ref(db, "friend/" + item.userId));
     });
