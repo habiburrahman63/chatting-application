@@ -2,6 +2,7 @@ import React from "react";
 import Sideber from "../Sideber/Sideber";
 import Friends from "../Friends/Friends";
 import ChatBox from "../ChatBox/ChatBox";
+import FriendChat from "../FriendChat/FriendChat";
 
 const Massege = () => {
   return (
@@ -9,7 +10,7 @@ const Massege = () => {
       <Sideber active="massege" />
       <div className="flex">
         <div className="flex flex-col gap-[20px]">
-          <Friends />
+          <FriendChat />
         </div>
         <div className="ml-[40px]">
           <ChatBox />

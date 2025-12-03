@@ -5,8 +5,11 @@ import { PiTriangleFill } from "react-icons/pi";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { CiCamera } from "react-icons/ci";
 import { IoIosSend } from "react-icons/io";
+import { useSelector } from "react-redux";
 
 const ChatBox = () => {
+  const activeData = useSelector((state) => state?.activeChatInfo?.value);
+
   return (
     <div>
       <div className="w-[700px] border-black/25 shadow-lg rounded-[20px] py-[24px] px-[51px]">
@@ -17,7 +20,7 @@ const ChatBox = () => {
             </div>
             <div>
               <h2 className="text-[24px] font-semibold text-black font-primary">
-                Swathi
+                {activeData ? <p>{activeData.name}</p> : <p>Unknown</p>}
               </h2>
               <p className="text-[14px] font-normal text-black/85 font-primary">
                 Online

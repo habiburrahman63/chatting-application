@@ -70,6 +70,28 @@ const UserList = () => {
   }, []);
   // console.log(userBlock);
 
+  const [filterUserList, setFilterUserList] = useState([]);
+  const handleSurcharge = (e) => {
+    let arr = [];
+    if (e.target.value.length == 0) {
+      setFilterUserList([]);
+    } else {
+      userList.filter((item) => {
+        if (
+          item.username.toLowerCase().includes(e.target.value.toLowerCase())
+        ) {
+          arr.push(item);
+          setFilterUserList(arr);
+        }
+      });
+    }
+    // userList.filter((item) => {
+    //   console.log(item.username.toLowerCase());
+    // });
+  };
+
+  console.log(filterUserList);
+
   return (
     <div>
       <div className="w-[427px]  bg-[#ffffff] pt-[13px] px-[20px] pb-[21px] rounded-[20px] ml-[43px] shadow-lg">
@@ -81,47 +103,96 @@ const UserList = () => {
             <HiOutlineDotsVertical />
           </div>
         </div>
+        <div className=" border-2 border-black/25">
+          <input
+            onChange={handleSurcharge}
+            className="w-full text-[20px] py-[5px] px-[10px] outline-none"
+            type="text"
+            placeholder="surcharge"
+          />
+        </div>
         <div className=" overflow-y-scroll h-[462px]">
-          {userList.map((user) => (
-            <div className="flex items-center gap-[51px] border-b-[1px] w-[350px] border-black/25 pb-[13px] mt-[17px] justify-between">
-              <div className="flex items-center gap-[14px]">
-                <img src={groupList} alt="" />
-                <div>
-                  <h2 className="text-[18px] font-semibold text-[#000] font-primary">
-                    {user.username}
-                  </h2>
-                  <p className="text-[14px] font-medium font-primary">
-                    {user.email}
-                  </p>
+          {filterUserList.length > 0
+            ? filterUserList.map((user) => (
+                <div className="flex items-center gap-[51px] border-b-[1px] w-[350px] border-black/25 pb-[13px] mt-[17px] justify-between">
+                  <div className="flex items-center gap-[14px]">
+                    <img src={groupList} alt="" />
+                    <div>
+                      <h2 className="text-[18px] font-semibold text-[#000] font-primary">
+                        {user.username}
+                      </h2>
+                      <p className="text-[14px] font-medium font-primary">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    {userBlock.includes(data.uid + user.userId) ||
+                    userBlock.includes(user.userId + data.uid) ? (
+                      <button className="text-[20px] font-semibold font-primary px-[15px] rounded-[5px] bg-black text-red-500">
+                        Block
+                      </button>
+                    ) : friendList.includes(data.uid + user.userId) ||
+                      friendList.includes(user.userId + data.uid) ? (
+                      <button className="text-[20px] font-semibold font-primary px-[15px] rounded-[5px] bg-green-500 text-white">
+                        Friend
+                      </button>
+                    ) : friendRequestList.includes(data.uid + user.userId) ||
+                      friendRequestList.includes(user.userId + data.uid) ? (
+                      <button className="text-[20px] font-semibold font-primary px-[22px] rounded-[5px] bg-[#1E1E1E] text-white">
+                        -
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleFriendRequest(user)}
+                        className="text-[20px] font-semibold font-primary px-[22px] rounded-[5px] bg-[#1E1E1E] text-white"
+                      >
+                        +
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div>
-                {userBlock.includes(data.uid + user.userId) ||
-                userBlock.includes(user.userId + data.uid) ? (
-                  <button className="text-[20px] font-semibold font-primary px-[15px] rounded-[5px] bg-black text-red-500">
-                    Block
-                  </button>
-                ) : friendList.includes(data.uid + user.userId) ||
-                  friendList.includes(user.userId + data.uid) ? (
-                  <button className="text-[20px] font-semibold font-primary px-[15px] rounded-[5px] bg-green-500 text-white">
-                    Friend
-                  </button>
-                ) : friendRequestList.includes(data.uid + user.userId) ||
-                  friendRequestList.includes(user.userId + data.uid) ? (
-                  <button className="text-[20px] font-semibold font-primary px-[22px] rounded-[5px] bg-[#1E1E1E] text-white">
-                    -
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleFriendRequest(user)}
-                    className="text-[20px] font-semibold font-primary px-[22px] rounded-[5px] bg-[#1E1E1E] text-white"
-                  >
-                    +
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
+              ))
+            : userList.map((user) => (
+                <div className="flex items-center gap-[51px] border-b-[1px] w-[350px] border-black/25 pb-[13px] mt-[17px] justify-between">
+                  <div className="flex items-center gap-[14px]">
+                    <img src={groupList} alt="" />
+                    <div>
+                      <h2 className="text-[18px] font-semibold text-[#000] font-primary">
+                        {user.username}
+                      </h2>
+                      <p className="text-[14px] font-medium font-primary">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    {userBlock.includes(data.uid + user.userId) ||
+                    userBlock.includes(user.userId + data.uid) ? (
+                      <button className="text-[20px] font-semibold font-primary px-[15px] rounded-[5px] bg-black text-red-500">
+                        Block
+                      </button>
+                    ) : friendList.includes(data.uid + user.userId) ||
+                      friendList.includes(user.userId + data.uid) ? (
+                      <button className="text-[20px] font-semibold font-primary px-[15px] rounded-[5px] bg-green-500 text-white">
+                        Friend
+                      </button>
+                    ) : friendRequestList.includes(data.uid + user.userId) ||
+                      friendRequestList.includes(user.userId + data.uid) ? (
+                      <button className="text-[20px] font-semibold font-primary px-[22px] rounded-[5px] bg-[#1E1E1E] text-white">
+                        -
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleFriendRequest(user)}
+                        className="text-[20px] font-semibold font-primary px-[22px] rounded-[5px] bg-[#1E1E1E] text-white"
+                      >
+                        +
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
     </div>
