@@ -5,6 +5,7 @@ import firebaseConfig from "./components/Firebase/firebaseConfig";
 import ForgotPassword from "./components/Page/ForgotPassword";
 import Home from "./components/Page/Home";
 import Massege from "./components/Massege/Massege";
+import SettingsInfo from "./components/SettingsInfo/SettingsInfo";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,6 +28,10 @@ function App() {
     {
       path: "/msg",
       element: <Massege />,
+    },
+    {
+      path: "/settings",
+      element: <SettingsInfo />,
     },
   ]);
   return (

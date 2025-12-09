@@ -7,15 +7,18 @@ import { CiCamera } from "react-icons/ci";
 import { IoIosSend } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
-
+import moment from "moment/moment";
+import EmojiPicker from "emoji-picker-react";
 const ChatBox = () => {
   const db = getDatabase();
   const activeData = useSelector((state) => state?.activeChatInfo?.value);
   const data = useSelector((selector) => selector.userInfo.value.user);
   const [msg, setMsg] = useState("");
   const [msgList, setMsgList] = useState([]);
+  const [emoji, setEmoji] = useState(false);
+
   const handleChatBox = () => {
-    console.log(msg);
+    setMsg("");
     set(
       push(ref(db, "msgeee/")),
 
@@ -25,6 +28,7 @@ const ChatBox = () => {
         receiverId: activeData.id,
         receiverName: activeData.name,
         message: msg,
+        date: moment().format(),
       }
     );
   };
@@ -44,9 +48,11 @@ const ChatBox = () => {
       });
       setMsgList(arr);
     });
-  }, []);
+  }, [activeData.id]);
 
-  console.log(msgList);
+  const handleEmoji = (em) => {
+    setMsg(msg + em.emoji);
+  };
 
   return (
     <div>
@@ -78,8 +84,9 @@ const ChatBox = () => {
                   <h2 className="py-[13px] px-[52px] bg-black inline-block rounded-[10px]  text-[16px] font-medium text-white font-primary">
                     {item.message}
                   </h2>
-                  <p className="text-[12px] font-normal text-black/25 font-primary mt-[5px]">
-                    Today, 2:01pm
+                  <p className="text-[12px] font-normal text-black/60 font-primary mt-[5px]">
+                    {/* {item.date} */}
+                    {moment(item.date).fromNow()}
                   </p>
                   <div className="absolute bottom-[19.5px] right-[-10px]">
                     <PiTriangleFill className="text-[#000000] text-[30px]" />
@@ -92,8 +99,8 @@ const ChatBox = () => {
                   <h2 className="py-[13px] px-[52px] bg-[#F1F1F1] inline-block rounded-[10px]  text-[16px] font-medium text-black font-primary">
                     {item?.message}
                   </h2>
-                  <p className="text-[12px] font-normal text-black/25 font-primary mt-[5px]">
-                    Today, 2:01pm
+                  <p className="text-[12px] font-normal text-black/60 font-primary mt-[5px]">
+                    {moment(item.date).fromNow()}
                   </p>
                   <div className="absolute bottom-[18px] left-[-10px]">
                     <PiTriangleFill className="text-[#F1F1F1] text-[30px]" />
@@ -104,11 +111,23 @@ const ChatBox = () => {
           )}
         </div>
 
-        <div className="py-[35px]">
+        <div className="py-[35px] relative">
+          <div className="absolute top-[-500px] left-[50%] -translate-x-[50%]">
+            {emoji ? (
+              <EmojiPicker
+                onEmojiClick={(em) => {
+                  handleEmoji(em);
+                }}
+              />
+            ) : (
+              ""
+            )}
+          </div>
           <div className="flex items-center justify-between">
             <div className="w-[537px] bg-[#F1F1F1] rounded-[10px] flex items-center justify-between px-[15px]">
               <div>
                 <input
+                  value={msg}
                   onChange={(e) => {
                     setMsg(e.target.value);
                   }}
@@ -118,14 +137,19 @@ const ChatBox = () => {
                 />
               </div>
               <div className="flex items-center gap-[13px]">
-                <MdOutlineEmojiEmotions className="text-[20px]" />
+                <MdOutlineEmojiEmotions
+                  onClick={() => {
+                    setEmoji(!emoji);
+                  }}
+                  className="text-[20px] cursor-pointer"
+                />
                 <CiCamera className="text-[20px]" />
               </div>
             </div>
             <div className="bg-black p-[15px] rounded-[10px] ml-[20px]">
               <IoIosSend
                 onClick={handleChatBox}
-                className="text-[30px] text-white"
+                className="text-[30px] text-white cursor-pointer"
               />
             </div>
           </div>

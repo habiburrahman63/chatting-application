@@ -56,12 +56,21 @@ const Sideber = ({ active }) => {
       >
         <Link to="/msg">
           <AiFillMessage
-            className={`${active == "home" ? "text-white" : "text-black"}`}
+            className={`${active == "massege" ? "text-black" : "text-white"}`}
           />
         </Link>
       </div>
-      <div className="text-[46px] text-[#C3C3C3] flex justify-center mt-[57px]">
-        <MdOutlineSettings />
+      <div
+        className={`relative flex justify-center pt-[20px] pb-[25px] text-center text-[47px]  rounded-tl-[20px] rounded-bl-[20px]
+  ${
+    active == "settings" ? "bg-white" : "bg-transparent"
+  } mt-[78px] ml-[25px] pr-[69px] pl-[45px] after:absolute after:content-[''] after:top-0 after:right-0 after:w-[8px] after:h-full after:bg-[#1E1E1E] after:shadow-cyan-500/50 after:rounded-tl-[8px] after:rounded-bl-[8px]`}
+      >
+        <Link to="/settings">
+          <MdOutlineSettings
+            className={`${active == "settings" ? "text-black" : "text-white"}`}
+          />
+        </Link>
       </div>
       <div className="text-[46px] text-[#C3C3C3] flex justify-center absolute left-[50%] translate-[-50%] bottom-[50px] cursor-pointer">
         <ImExit onClick={handleSginOut} />
