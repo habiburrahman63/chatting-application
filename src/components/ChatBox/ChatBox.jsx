@@ -29,7 +29,7 @@ const ChatBox = () => {
         receiverName: activeData.name,
         message: msg,
         date: moment().format(),
-      }
+      },
     );
   };
 
@@ -48,7 +48,7 @@ const ChatBox = () => {
       });
       setMsgList(arr);
     });
-  }, [activeData.id]);
+  }, [activeData?.id]);
 
   const handleEmoji = (em) => {
     setMsg(msg + em.emoji);
@@ -107,7 +107,7 @@ const ChatBox = () => {
                   </div>
                 </div>
               </div>
-            )
+            ),
           )}
         </div>
 
